@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ item.title }}{% endblock %}
+
+{% block content %}
+    <div class="collection-detail">
+        {# Левая колонка: всё остальное #}
+        <div class="collection-info">
+            <div class="title-wrap">
+                <div class="collection-title">[{{ collection.status }}]</div>
+            </div>
+            <div class="description">{{ collection.description }}</div>
+            <a class="collection-plaque" href="{% url 'catalog' %}">перейти к покупкам</a>
+        </div>
+
+        {# Правая колонка: фотография #}
+        <div class="collection-card-images">
+            {% for img in images %}
+                <img src="{{ img.image.url }}">
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}

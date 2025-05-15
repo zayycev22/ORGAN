@@ -1,0 +1,31 @@
+<!-- templates/collections.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Коллекции{% endblock %}
+{% block body_class %}no-background{% endblock %}
+
+{% block content %}
+<div class="collections-section">
+    {% if collections %}
+        {% for collection in collections %}
+            <a href="{% url 'collection_detail' collection.id %}" class="collection-link">
+            <div class="collection">
+                <div class="collection-images">
+                    {% for image in collection.images.all %}
+                        <img src="{{ image.image.url }}" alt="Collection Image">
+                    {% endfor %}
+                </div>
+                <div class="collection-header">
+                    <div>[{{ collection.name }}]</div><div> {{ collection.year }}</div>
+                </div>
+                <div class="collection-status">
+                    {{ collection.status }}
+                </div>
+            </div>
+            </a>
+        {% endfor %}
+    {% else %}
+        <p>Нет коллекций для отображения.</p>
+    {% endif %}
+</div>
+{% endblock %}

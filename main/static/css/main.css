@@ -1,0 +1,716 @@
+/* Глобальные стили */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: white;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Фон для секции коллекций */
+body.no-background {
+    background-image: none;
+}
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+.mainScreen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 100;
+}
+
+/* НАВИГАЦИЯ */
+.nav-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100vw;
+    position: relative;
+    background: rgb(232, 232, 232);
+    z-index: 221;
+}
+
+.nav-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 50vw;
+    z-index: 221;
+}
+
+.nav-cell {
+    text-decoration: none;
+    width: 50vw;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 18px;
+    line-height: 20px;
+    color: black;
+    background: #fff;
+    height: 22px;
+    z-index: 221;
+}
+
+.nav-cell.active {
+    background-color: #FFE778 !important;
+}
+
+.nav-cell.about:not(.active),
+.nav-cell.cart:not(.active) {
+    background-color: #CECECE;
+}
+
+.nav-cell:hover {
+    color: #555
+}
+
+.nav-cell.active {
+    background-color: white;
+}
+
+.nav-cell.empty-left {
+    background-color: #E8E8E8;
+}
+
+.nav-cell.empty-right {
+    height: 22px;
+    margin: 0;
+    padding: 0;
+}
+
+/* КАТАЛОГ */
+.catalog-content {
+    display: none;
+    background-color: white;
+    padding: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    pointer-events: none;
+}
+
+.catalog-content div {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.catalog-content img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+/* ФИЛЬТР */
+.categoryFilter {
+    color: black;
+    border: unset;
+    font-size: 16px;
+    pointer-events: auto;
+}
+
+.categoryFilter option {
+    color: black;
+    background-color: white;
+}
+
+.catalog-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.filter-container {
+    padding: 10px 20px;
+    background-color: white;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    bottom: 40px;
+    gap: 4px;
+    left: 10px;
+}
+
+.catalog-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 0 0 auto;
+
+    width: 150px;
+    height: 180px;
+    background: white;
+    text-align: center;
+    padding-top: 10px;
+    transition: transform .1s linear;
+    cursor: pointer;
+}
+
+.catalog-item-link:nth-child(odd):hover .catalog-item {
+    transform: rotate(1deg) scale(1.05);
+}
+
+.catalog-item-link:nth-child(even):hover .catalog-item{
+    transform: rotate(-1deg) scale(1.05);
+}
+
+.catalog-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.catalog-title {
+    margin-top: 5px;
+    color: black;
+}
+
+.catalog-item:hover .catalog-title {
+    color: #555;
+}
+
+.catalog-item-link {
+    color: #000;
+    text-decoration: none;
+}
+
+.catalog-item-link:hover {
+    color: #333;
+}
+
+.catalog-scroll-container {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    gap: 40px;
+    padding: 10px;
+}
+
+.catalog-item {
+    flex: 0 0 auto;
+    width: 150px;
+    height: 180px;
+    flex-shrink: 1;
+    background: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 10px;
+}
+
+
+#collections-content {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    padding: 40px;
+    background-color: white;
+    color: black;
+    min-height: 100vh; /* Чтобы блок занимал минимум всю высоту экрана */
+    overflow: hidden; /* Скрыть лишнее */
+    z-index: 10;
+}
+
+.collections-content {
+    overflow-y: auto; /* Вертикальный скролл, если контент не помещается */
+}
+
+.collection:first-child {
+    margin-top: 30px;
+
+}
+
+.collection {
+    margin-bottom: 30px; /* Отступ между коллекциями */
+    padding: 10px 20px;
+}
+
+.collection-header {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.collection:hover .collection-images img {
+    /* Применяем фильтр, превращающий картинку в желтый оттенок */
+    filter: sepia(1) saturate(5) brightness(0.7);
+    transition: filter 0.3s ease;
+}
+
+.collection-images img {
+    transition: filter 0.3s ease; /* плавный переход при наведении и уходе */
+}
+
+.collection-images {
+    display: flex;
+    overflow-x: auto; /* Горизонтальный скролл для картинок */
+    gap: 10px;
+}
+
+.collection-images img {
+    max-height: 150px; /* Высота картинок */
+    object-fit: cover;
+}
+
+/* Добавим в ваш CSS */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 110px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 110px);
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    opacity: 0;
+    transition: opacity .2s ease;
+}
+
+.cart-overlay-content {
+    background: #cecece !important;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.cart-wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+}
+.overlay-content {
+    background: white;
+    width: 50%;
+    height: 100vh;
+    position: fixed;
+    right: 0;
+    top: 0px;
+    transform: translateY(100%);
+    transition: transform .2s ease;
+    overflow-y: hidden;
+}
+
+
+
+.overlay.active {
+    opacity: 1;
+}
+
+.overlay.active .overlay-content {
+    transform: translateY(0);
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 111;
+}
+
+.search-box {
+  font-family: sans-serif;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+}
+.bracket {
+  font-weight: bold;
+  margin: 0 4px;
+}
+
+.search-content {
+    background: white;
+    width: 50%;
+    height: calc(100vh - 110px);
+    position: fixed;
+    right: 0;
+    top: 110px;
+    transform: translateY(100%);
+    transition: transform .2s ease;
+    overflow-y: hidden;
+}
+.search.active .search-content {
+    transform: translateY(0);
+}
+
+
+.search-box input {
+  font-size: inherit;
+  font-family: inherit;
+  border: none;
+  outline: none;
+  padding: 0;
+  width: 1px; /* почти ноль — ширина под 1 символ */
+  background: transparent;
+  transition: width 0.2s ease;
+}
+
+.search-field {
+    margin-top: 10px;
+    width: 100%;
+    font-size: 14px;
+    padding: 10px 20px;
+}
+
+.search-results-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.search-item {
+    max-width: 150px;
+    min-height: 150px;
+    overflow-x: hidden;
+    transition: transform .1s ease;
+}
+.search-item:nth-child(odd):hover {
+    transform: rotate(1deg) scale(1.05);
+}
+.search-item:nth-child(even):hover {
+    transform: rotate(-1deg) scale(1.05);
+}
+
+.search-item img{
+    width: 150px;
+    height: 150px;
+}
+
+.about-text {
+    position: relative;
+    font-size: 20px;
+    line-height: 22px;
+    padding-top: 20px !important;
+    color: #111;
+}
+
+.about-section {
+    background: #fff;
+    padding-bottom: 20px;
+}
+
+.product-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Левая колонка (инфо) пусть скроллится, если текста много */
+.product-info {
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+/* Правая колонка — картинка на весь свой блок */
+.product-image {
+    height: calc(100vh - 110px);
+}
+
+.product-image img {
+    width: 100%;
+    height: calc(100vh - 110px);
+    object-fit: cover;
+}
+
+/* Общие стили «плашек» */
+.plaque {
+    display: inline-block;
+    font-size: 25px;
+    line-height: 21px;
+    background: rgba(255, 255, 255, 0.85);
+    position: relative;
+    z-index: 3; /* плашки всегда на самом верху */
+    font-weight: 400;
+}
+
+/* Конкретные плашки */
+.plaque-price {
+    text-transform: lowercase;
+    position: absolute;
+    padding: 0 10px;
+    right: -20px;
+    transform: translateY(-50%);
+    width: 200px;
+    background: #cecece;
+}
+
+.plaque-cart {
+    text-transform: uppercase;
+    right: 0;
+    top: 0;
+    transform: translateY(-50%);
+}
+
+.plaque-footer {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    font-size: 16px;
+    background: #E8E8E8;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 5px 0;
+}
+
+.plaque-footer .availability {
+    position: absolute;
+    right: 0;
+    width: 180px;
+    padding: 0 10px;
+    text-decoration: underline;
+}
+
+.size-wrap {
+    margin-top: 4px;
+    margin-bottom: 20px;
+}
+
+.title-wrap {
+    width: 100%;
+    margin-top: 12px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.btn-add {
+    display: inline-block;
+    width: 180px;
+    text-decoration: none;
+    background-color: #FFE778; /* жёлтый фон */
+    color: #000;
+    padding: 0 10px;
+}
+
+
+.product-title {
+    margin: 0 0 20px;
+    font-size: 25px;
+}
+
+.description {
+    position: relative;
+    font-size: 20px;
+    margin: 20px 0;
+    line-height: 1;
+    max-width: 500px;
+}
+
+/* Кнопки внутри оверлея корзины */
+.overlay-actions {
+    display: flex;
+    color: #000;
+    justify-content: space-between;
+    margin: 16px 0;
+}
+
+.btn-back,
+.btn-checkout {
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-back {
+    color: #000;
+}
+
+.btn-checkout {
+    color: #000;
+}
+
+.btn-back:hover {
+    color: #333;
+}
+
+.btn-checkout:hover {
+    color: #333;
+}
+
+.search-container {
+    padding: 20px;
+}
+
+.cart-list-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.cart-list {
+    margin-top: 20px;
+    list-style: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.cart-item {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 40px;
+    font-size: 25px;
+}
+
+.cart-item:not(:first-child) {
+    margin-top: 16px;
+}
+
+.cart-footer-label {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 40px;
+    font-size: 28px;
+}
+
+.cart-general {
+    display: flex;
+    flex-direction: row;
+}
+
+.cart-thumb {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+    margin-right: 10px;
+}
+
+.cart-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.cart-info .delete-item-btn {
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    color: #000;
+    border: unset;
+    background: transparent;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.cart-info .delete-item-btn:hover {
+    color: #333;
+}
+
+.cart-sum {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.collection-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Левая колонка (инфо) пусть скроллится, если текста много */
+.collection-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    margin-bottom: 40px;
+    padding: 0 10px;
+    text-transform: uppercase;
+}
+
+/* Правая колонка — картинка на весь свой блок */
+.collection-card-images {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 10px;
+    z-index: 2;
+}
+
+.collection-card-images img {
+    height: 100% !important;
+    object-fit: cover;
+    z-index: 2;
+}
+
+.collection-link {
+    color: #000;
+    text-decoration: none;
+}
+
+.collection-title {
+    font-size: 30px;
+}
+
+.collection-plaque {
+    color: #000;
+    width: 450px;
+    font-size: 20px;
+    position: absolute;
+    display: inline-block;
+    padding: 3px 10px;
+    text-decoration: underline;
+    background-color: #FFE778;
+    z-index: 3;
+    font-weight: 400;
+    bottom: 20px;
+    right: -150px;
+}

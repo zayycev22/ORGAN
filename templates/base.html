@@ -1,0 +1,51 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ORGANIC | {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static '/css/main.css' %}"/>
+    <style>
+        /* Фоновое изображение по умолчанию */
+        body.default-background {
+            background-image: url('{{ background_image.image.url }}');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css">
+</head>
+<body>
+
+<!-- Навигация -->
+<div class="nav-container" style="position: relative; z-index: 10;">
+    <div class="nav-column">
+        <a class="nav-cell" href="/catalog">КАТАЛОГ [catalog]</a>
+        <div class="nav-cell empty-left"></div>
+        <a class="nav-cell" href="/collections">коллекции [collections]</a>
+        <div class="nav-cell empty-left"></div>
+        <a class="nav-cell about" href="/about">о нас [about]</a>
+    </div>
+
+    <div class="nav-column" style="background: #fff">
+        <div class="nav-cell empty-right"></div>
+        <div class="nav-cell active" id="search-cell" data-overlay="search">поиск [search]</div>
+        <div class="nav-cell empty-right"></div>
+        <div class="nav-cell cart" id="cart-cell" data-overlay="cart">корзина [cart]</div>
+    </div>
+</div>
+
+<!-- Основное содержимое -->
+<main class="mainScreen">
+    {% block content %}{% endblock %}
+</main>
+
+<!-- Оверлеи -->
+{% include 'partials/search_overlay.html' %}
+{% include 'partials/cart_overlay.html' %}
+
+
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

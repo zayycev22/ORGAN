@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load static price_filters %}
+{% block title %}{{ item.title }}{% endblock %}
+
+{% block content %}
+    <div class="product-detail">
+        {# Левая колонка: всё остальное #}
+        <div class="product-info">
+            <div class="title-wrap">
+                <div class="product-title">{{ item.title }}</div>
+                <div class="plaque plaque-price">
+                    {{ item.price|spaced }} р.
+                </div>
+            </div>
+
+            {# Плашка с кнопкой «В корзину» #}
+            <div class="title-wrap">
+                <p class="description">{{ item.description }}</p>
+                <div class="plaque plaque-cart">
+                    <a href="#" id="add-to-cart-btn" class="btn-add"
+                       data-id="{{ item.id }}"
+                       data-title="{{ item.title }}"
+                       data-price="{{ item.price }}"
+                       data-image="{{ item.image.url }}">
+                        В корзину
+                    </a>
+                </div>
+            </div>
+
+            {# Описание товара #}
+
+            {# Нижняя плашка с материалом, размером и наличием #}
+            <div class="plaque plaque-footer">
+                <span class="material">{{ item.material }}</span>
+                <span class="availability">
+                    {% if item.available %}Есть в наличии{% else %}Нет в наличии{% endif %}
+                </span>
+            </div>
+            <div class="size-wrap">
+                <span class="size">{{ item.size }}</span>
+            </div>
+
+        </div>
+
+        {# Правая колонка: фотография #}
+        <div class="product-image">
+            <img src="{{ item.image.url }}" alt="{{ item.title }}">
+        </div>
+
+    </div>
+{% endblock %}

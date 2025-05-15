@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        {% if background_image %}
+            background-image: url("{{ background_image.image.url }}");
+        {% else %}
+            background-color: #f8f8f8; /* Цвет фона по умолчанию */
+        {% endif %}
+        background-size: cover;
+        background-position: top;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        color: black; /* Цвет текста поверх фона */
+    }
+</style>
+
+<div class="home-content">
+</div>
+{% endblock %}
