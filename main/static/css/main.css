@@ -16,7 +16,8 @@ body.no-background {
     background-image: none;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     overflow-x: hidden;
 }
@@ -73,11 +74,7 @@ html, body {
 }
 
 .nav-cell:hover {
-    color: #555
-}
-
-.nav-cell.active {
-    background-color: white;
+    color: #555;
 }
 
 .nav-cell.empty-left {
@@ -91,41 +88,6 @@ html, body {
 }
 
 /* КАТАЛОГ */
-.catalog-content {
-    display: none;
-    background-color: white;
-    padding: 20px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    pointer-events: none;
-}
-
-.catalog-content div {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
-}
-
-.catalog-content img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-}
-
-/* ФИЛЬТР */
-.categoryFilter {
-    color: black;
-    border: unset;
-    font-size: 16px;
-    pointer-events: auto;
-}
-
-.categoryFilter option {
-    color: black;
-    background-color: white;
-}
-
 .catalog-section {
     position: relative;
     display: flex;
@@ -145,14 +107,24 @@ html, body {
     gap: 4px;
     left: 10px;
 }
-
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+#categoryFilter {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 5px;
+    font-size: 14px;
+}
 .catalog-item {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     flex: 0 0 auto;
-
     width: 150px;
     height: 180px;
     background: white;
@@ -166,14 +138,14 @@ html, body {
     transform: rotate(1deg) scale(1.05);
 }
 
-.catalog-item-link:nth-child(even):hover .catalog-item{
+.catalog-item-link:nth-child(even):hover .catalog-item {
     transform: rotate(-1deg) scale(1.05);
 }
 
 .catalog-image {
     width: 150px;
     height: 150px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .catalog-title {
@@ -196,86 +168,188 @@ html, body {
 
 .catalog-scroll-container {
     display: flex;
-    flex-grow: 1;
-    flex-shrink: 0;
     overflow-x: auto;
-    overflow-y: hidden;
-    flex-wrap: nowrap;
-    gap: 40px;
-    padding: 10px;
+    gap: 17px;
+    padding-top: 60px; /* Высота хедера */
+    padding-bottom: 20px;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.catalog-scroll-container::-webkit-scrollbar {
+    display: none;
 }
 
-.catalog-item {
-    flex: 0 0 auto;
-    width: 150px;
-    height: 180px;
-    flex-shrink: 1;
-    background: white;
+/* === Глобальный контейнер под сетку === */
+
+.grid-container {
+    max-width: 1920px;
+    margin: 0;
+    padding: 0 20px;
+}
+
+/* === Вертикальная 12-колоночная сетка === */
+
+.grid-12-cols {
+    display: grid;
+    grid-template-columns:
+        [col1-start] 143px [col1-end col2-start]
+        17px [col2-end col3-start]
+        143px [col3-end col4-start]
+        17px [col4-end col5-start]
+        143px [col5-end col6-start]
+        17px [col6-end col7-start]
+        143px [col7-end col8-start]
+        17px [col8-end col9-start]
+        143px [col9-end col10-start]
+        17px [col10-end col11-start]
+        143px [col11-end col12-start]
+        17px [col12-end];
+    gap: 17px;
+    justify-content: center;
+    overflow-x: hidden;
+}
+
+/* === Горизонтальная сетка товаров (12 столбцов + 11 отступов) === */
+
+.product-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 17px;
+    padding: 20px 0;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.product-grid::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.product-card {
+    min-width: 143px;
+    max-height: 500px;
+    flex-shrink: 0;
+    background-color: #fff;
+    border-radius: 8px;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding-top: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform .2s ease;
+}
+
+.product-card:hover {
+    transform: scale(1.03);
 }
 
 
-#collections-content {
-    position: absolute;
-    top: 50px;
-    left: 0;
-    right: 0;
-    padding: 40px;
-    background-color: white;
+.product-card a {
     color: black;
-    min-height: 100vh; /* Чтобы блок занимал минимум всю высоту экрана */
-    overflow: hidden; /* Скрыть лишнее */
-    z-index: 10;
+    text-decoration: none;
+}
+.additional-images-scroll {
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: calc(100vh - 110px - 200px); /* Высота экрана минус заголовок и основное изображение */
+}
+.product-image {
+    width: 100%;
+    max-width: 50vw;
+    max-height: 173px;
+
+    border-radius: 4px;
+    margin-bottom: 8px;
+    flex-shrink: 0;
 }
 
-.collections-content {
-    overflow-y: auto; /* Вертикальный скролл, если контент не помещается */
+.product-image img.main-image {
+    width: 100%; /* Ширина = максимальной ширине контейнера */
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    max-height: calc(100vh - 110px - 20px); /* компенсируем отступы */
+    max-width: 100%; /* никогда не выходит за пределы .product-image */
 }
 
-.collection:first-child {
-    margin-top: 30px;
 
+
+.product-title {
+    font-size: 14px;
+    text-transform: uppercase;
+    color: black;
+    white-space: nowrap;
+    margin-top: 8px;
 }
 
-.collection {
-    margin-bottom: 30px; /* Отступ между коллекциями */
-    padding: 10px 20px;
-}
+/* === Фильтры внизу === */
 
-.collection-header {
-    margin-top: 10px;
+.filter-bar-bottom {
+    position: absolute;
+    bottom: 20px; /* Отступ снизу */
+    left: 20px; /* Прижато к левому краю */
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.collection:hover .collection-images img {
-    /* Применяем фильтр, превращающий картинку в желтый оттенок */
-    filter: sepia(1) saturate(5) brightness(0.7);
-    transition: filter 0.3s ease;
-}
-
-.collection-images img {
-    transition: filter 0.3s ease; /* плавный переход при наведении и уходе */
-}
-
-.collection-images {
-    display: flex;
-    overflow-x: auto; /* Горизонтальный скролл для картинок */
+    align-items: center;
     gap: 10px;
+    z-index: 100;
+    background-color: transparent;
+    padding: 10px 0;
+    width: calc(100vw - 40px); /* компенсировать padding grid-container */
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
-.collection-images img {
-    max-height: 150px; /* Высота картинок */
-    object-fit: cover;
+.filter-bar-bottom span {
+    font-size: 14px;
+    color: black;
 }
 
-/* Добавим в ваш CSS */
+#categoryFilterBottom {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    padding: 5px;
+}
+
+/* === Упрощение через классы === */
+
+.col-span-1 {
+    flex-basis: 143px;
+}
+
+.col-span-2 {
+    flex-basis: calc(2 * 143px + 1 * 17px); /* 286px + 17px */
+}
+
+.col-span-3 {
+    flex-basis: calc(3 * 143px + 2 * 17px); /* 429px + 34px */
+}
+
+.catalog-grid {
+    display: grid;
+    grid-template-columns: inherit;
+    gap: inherit;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    white-space: nowrap;
+}
+
+.pixel-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 17px;
+    padding: 20px 0;
+}
+
+.pixel-grid .grid-image {
+    min-width: 143px;
+    height: auto;
+    flex-shrink: 0;
+}
+
+/* === Поиск === */
+
 .overlay {
     display: none;
     position: fixed;
@@ -295,25 +369,25 @@ html, body {
     flex-direction: column;
     flex: 1;
 }
+
 .cart-wrap {
     display: flex;
     flex-direction: column;
     flex: 1;
     padding: 20px;
 }
+
 .overlay-content {
     background: white;
     width: 50%;
     height: 100vh;
     position: fixed;
     right: 0;
-    top: 0px;
+    top: 110px;
     transform: translateY(100%);
     transition: transform .2s ease;
     overflow-y: hidden;
 }
-
-
 
 .overlay.active {
     opacity: 1;
@@ -335,14 +409,15 @@ html, body {
 }
 
 .search-box {
-  font-family: sans-serif;
-  font-size: 16px;
-  display: inline-flex;
-  align-items: center;
+    font-family: sans-serif;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
 }
+
 .bracket {
-  font-weight: bold;
-  margin: 0 4px;
+    font-weight: bold;
+    margin: 0 4px;
 }
 
 .search-content {
@@ -356,20 +431,20 @@ html, body {
     transition: transform .2s ease;
     overflow-y: hidden;
 }
+
 .search.active .search-content {
     transform: translateY(0);
 }
 
-
 .search-box input {
-  font-size: inherit;
-  font-family: inherit;
-  border: none;
-  outline: none;
-  padding: 0;
-  width: 1px; /* почти ноль — ширина под 1 символ */
-  background: transparent;
-  transition: width 0.2s ease;
+    font-size: inherit;
+    font-family: inherit;
+    border: none;
+    outline: none;
+    padding: 0;
+    width: 1px; /* почти ноль — ширина под 1 символ */
+    background: transparent;
+    transition: width 0.2s ease;
 }
 
 .search-field {
@@ -383,28 +458,24 @@ html, body {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 16px;
     margin-top: 32px;
 }
 
 .search-item {
-    max-width: 150px;
+    min-width: 143px;
     min-height: 150px;
     overflow-x: hidden;
     transition: transform .1s ease;
 }
-.search-item:nth-child(odd):hover {
-    transform: rotate(1deg) scale(1.05);
-}
-.search-item:nth-child(even):hover {
-    transform: rotate(-1deg) scale(1.05);
-}
 
-.search-item img{
-    width: 150px;
+.search-item img {
+    width: 143px;
     height: 150px;
 }
+
+/* === Раздел "О нас" === */
 
 .about-text {
     position: relative;
@@ -419,6 +490,8 @@ html, body {
     padding-bottom: 20px;
 }
 
+/* === Карточка товара === */
+
 .product-detail {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -428,38 +501,66 @@ html, body {
     overflow: hidden;
 }
 
-/* Левая колонка (инфо) пусть скроллится, если текста много */
 .product-info {
     text-transform: uppercase;
     display: flex;
     flex-direction: column;
     flex: 1;
     justify-content: flex-end;
+    position: relative;
+    margin-bottom: 40px;
+    padding: 0 10px;
 }
 
-/* Правая колонка — картинка на весь свой блок */
 .product-image {
     height: calc(100vh - 110px);
 }
 
 .product-image img {
-    width: 100%;
-    height: calc(100vh - 110px);
-    object-fit: cover;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 
-/* Общие стили «плашек» */
+.additional-images {
+    margin-top: 10px;
+}
+
+.image-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px;
+    white-space: nowrap;
+}
+
+.image-scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.image-scroll-container img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+
+/* === Плашки === */
+
 .plaque {
     display: inline-block;
     font-size: 25px;
     line-height: 21px;
     background: rgba(255, 255, 255, 0.85);
     position: relative;
-    z-index: 3; /* плашки всегда на самом верху */
+    z-index: 3;
     font-weight: 400;
 }
 
-/* Конкретные плашки */
 .plaque-price {
     text-transform: lowercase;
     position: absolute;
@@ -483,7 +584,6 @@ html, body {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-
     font-size: 16px;
     background: #E8E8E8;
     gap: 10px;
@@ -517,11 +617,10 @@ html, body {
     display: inline-block;
     width: 180px;
     text-decoration: none;
-    background-color: #FFE778; /* жёлтый фон */
+    background-color: #FFE778;
     color: #000;
     padding: 0 10px;
 }
-
 
 .product-title {
     margin: 0 0 20px;
@@ -536,7 +635,8 @@ html, body {
     max-width: 500px;
 }
 
-/* Кнопки внутри оверлея корзины */
+/* === Корзина === */
+
 .overlay-actions {
     display: flex;
     color: #000;
@@ -618,7 +718,7 @@ html, body {
 .cart-thumb {
     width: 150px;
     height: 150px;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
     margin-right: 10px;
 }
@@ -651,6 +751,8 @@ html, body {
     flex-direction: column-reverse;
 }
 
+/* === Детали коллекции === */
+
 .collection-detail {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -660,7 +762,6 @@ html, body {
     overflow: hidden;
 }
 
-/* Левая колонка (инфо) пусть скроллится, если текста много */
 .collection-info {
     flex: 1;
     display: flex;
@@ -672,7 +773,6 @@ html, body {
     text-transform: uppercase;
 }
 
-/* Правая колонка — картинка на весь свой блок */
 .collection-card-images {
     display: flex;
     flex-direction: row;
@@ -687,7 +787,7 @@ html, body {
 
 .collection-card-images img {
     height: 100% !important;
-    object-fit: cover;
+    object-fit: contain;
     z-index: 2;
 }
 

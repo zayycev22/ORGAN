@@ -1,36 +1,65 @@
 <!-- templates/catalog.html -->
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Каталог{% endblock %}
 
 {% block content %}
-    <div class="catalog-section">
-        <div class="filter-container">
-            <span>ФИЛЬТР</span>
-            <select class="categoryFilter" onchange="filterCatalog(this.value)">
-                <option value="all">[ВСЕ ТОВАРЫ]</option>
-                <option value="bracelets">[Браслеты]</option>
-                <option value="earrings">[Серьги]</option>
-                <option value="pendants">[Кулоны]</option>
-                <option value="necklaces">[Ожерелья]</option>
-                <option value="rings">[Кольца]</option>
-            </select>
-        </div>
-
-        <div class="catalog-scroll-container" id="catalogContent">
-            {% if items %}
-                {% for item in items %}
-                    <a href="{% url 'catalog_item_detail' item.id %}" class="catalog-item-link">
-                        <div class="catalog-item">
-                            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="catalog-image">
-                            <p class="catalog-title">{{ item.title }}</p>
-                        </div>
-                    </a>
-                {% endfor %}
-            {% else %}
-                <p>Товары не найдены для выбранной категории.</p>
-            {% endif %}
-        </div>
+<div class="grid-container">
+    <!-- Верхнее меню -->
+    <div class="nav-container">
+        <!-- Верхнее меню здесь -->
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js"></script>
+
+    <!-- Горизонтальная сетка товаров -->
+    <div class="product-grid catalog-scroll-container" id="catalogContent">
+        {% if items %}
+            {% for item in items %}
+                <div class="product-card col-span-2">
+                    <a href="{% url 'catalog_item_detail' item.id %}">
+                        <img src="{{ item.image.url }}" alt="{{ item.title }}" class="product-image">
+                        <p class="product-title">{{ item.title }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Товары не найдены для выбранной категории.</p>
+        {% endif %}
+    </div>
+
+    <!-- Фильтры внизу страницы, выровнены по левому краю товаров -->
+    <div class="filter-bar-bottom">
+        <span>ФИЛЬТР</span>
+        <select id="categoryFilterBottom" onchange="filterCatalog(this.value)">
+            <option value="all">[ВСЕ ТОВАРЫ]</option>
+            <option value="bracelets">[Браслеты]</option>
+            <option value="earrings">[Серьги]</option>
+            <option value="pendants">[Кулоны]</option>
+            <option value="necklaces">[Ожерелья]</option>
+            <option value="rings">[Кольца]</option>
+        </select>
+    </div>
+</div>
+
+<script>
+    function filterCatalog(category) {
+        fetch(`/api/catalog/filter/?category=${category}`)
+            .then(res => res.json())
+            .then(data => {
+                const grid = document.getElementById('catalogContent');
+                grid.innerHTML = '';
+                data.items.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card col-span-2';
+                    card.innerHTML = `
+                        <a href="/catalog/${item.id}">
+                            <img src="${item.image}" alt="${item.title}" class="product-image">
+                            <p class="product-title">${item.title}</p>
+                        </a>
+                    `;
+                    grid.appendChild(card);
+                });
+            }).catch(console.error);
+    }
+</script>
 {% endblock %}

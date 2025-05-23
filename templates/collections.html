@@ -9,19 +9,20 @@
     {% if collections %}
         {% for collection in collections %}
             <a href="{% url 'collection_detail' collection.id %}" class="collection-link">
-            <div class="collection">
-                <div class="collection-images">
-                    {% for image in collection.images.all %}
-                        <img src="{{ image.image.url }}" alt="Collection Image">
-                    {% endfor %}
+                <div class="collection">
+                    <!-- Здесь будет сетка ПИКСЕЛЕЙ только для изображений -->
+                    <div class="collection-images pixel-grid">
+                        {% for image in collection.images.all %}
+                            <img src="{{ image.image.url }}" alt="Collection Image" class="grid-image">
+                        {% endfor %}
+                    </div>
+                    <div class="collection-header">
+                        <div>[{{ collection.name }}]</div><div>{{ collection.year }}</div>
+                    </div>
+                    <div class="collection-status">
+                        {{ collection.status }}
+                    </div>
                 </div>
-                <div class="collection-header">
-                    <div>[{{ collection.name }}]</div><div> {{ collection.year }}</div>
-                </div>
-                <div class="collection-status">
-                    {{ collection.status }}
-                </div>
-            </div>
             </a>
         {% endfor %}
     {% else %}

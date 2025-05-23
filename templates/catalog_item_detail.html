@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load static price_filters %}
+{% load price_filters %}
+
 {% block title %}{{ item.title }}{% endblock %}
 
 {% block content %}
     <div class="product-detail">
-        {# Левая колонка: всё остальное #}
+        <!-- Левая колонка: информация о товаре -->
         <div class="product-info">
             <div class="title-wrap">
                 <div class="product-title">{{ item.title }}</div>
@@ -14,7 +15,7 @@
                 </div>
             </div>
 
-            {# Плашка с кнопкой «В корзину» #}
+            <!-- Плашка с кнопкой "В корзину" -->
             <div class="title-wrap">
                 <p class="description">{{ item.description }}</p>
                 <div class="plaque plaque-cart">
@@ -28,25 +29,41 @@
                 </div>
             </div>
 
-            {# Описание товара #}
-
-            {# Нижняя плашка с материалом, размером и наличием #}
+            <!-- Нижняя плашка с информацией -->
             <div class="plaque plaque-footer">
                 <span class="material">{{ item.material }}</span>
                 <span class="availability">
                     {% if item.available %}Есть в наличии{% else %}Нет в наличии{% endif %}
                 </span>
             </div>
+
+            <!-- Размер кольца -->
             <div class="size-wrap">
                 <span class="size">{{ item.size }}</span>
             </div>
-
         </div>
 
-        {# Правая колонка: фотография #}
-        <div class="product-image">
-            <img src="{{ item.image.url }}" alt="{{ item.title }}">
-        </div>
+        <!-- Правая колонка: изображения товара -->
+        <div class="product-image" id="scroll-target">
+            <!-- Основное изображение товара -->
+            {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.title }}" class="main-image">
+            {% else %}
+                <p>Нет основного изображения</p>
+            {% endif %}
 
+            <!-- Горизонтальный скроллинг дополнительных изображений -->
+            <div class="additional-images">
+                {% if item.images.exists %}
+                    <div class="image-scroll-container">
+                        {% for additional_image in item.images.all %}
+                            <img src="{{ additional_image.image.url }}" alt="{{ item.title }}">
+                        {% empty %}
+                            <p>Нет дополнительных изображений</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}

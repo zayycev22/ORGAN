@@ -38,7 +38,18 @@
 
 <!-- Основное содержимое -->
 <main class="mainScreen">
-    {% block content %}{% endblock %}
+    {% block content %}
+        <div class="grid-12-cols">
+        {% for item in items %}
+            <div class="catalog-item" style="grid-column: span 2;">
+                <a href="{% url 'catalog_item_detail' item.id %}">
+                    <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                    <p>{{ item.title }}</p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    {% endblock %}
 </main>
 
 <!-- Оверлеи -->

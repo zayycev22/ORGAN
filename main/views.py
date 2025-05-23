@@ -7,6 +7,7 @@ from .models import HomePageImage, CatalogItem, Collection, CollectionImage
 def catalog_item_detail(request, item_id):
     """Страница с подробной информацией о товаре"""
     item = get_object_or_404(CatalogItem, id=item_id)
+
     if item.description is None:
         item.description = ""
     return render(request, 'catalog_item_detail.html', {

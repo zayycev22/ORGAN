@@ -3,6 +3,11 @@
 {% block title %}О нас{% endblock %}
 
 {% block content %}
+    <div class="grid-12-cols about-grid">
+        <div class="about-text" style="grid-column: span 4;">
+            {{ item.description }}
+        </div>
+    </div>
 <div class="about-section">
     <div class="about-text">
         Привет, это — органик. Мы ищем вдохновение в том, что нас<br/>
