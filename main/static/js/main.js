@@ -68,7 +68,7 @@ function initCatalogFilter() {
     const category = urlParams.get('category') || 'all';
     const filterSelect = document.getElementById('categoryFilter');
     filterSelect.value = category;
-    filterSelect.addEventListener('change', function() {
+    filterSelect.addEventListener('change', function () {
         window.location.href = `/catalog/?category=${this.value}`;
     });
 }
@@ -76,11 +76,11 @@ function initCatalogFilter() {
 // Optional: AJAX-фильтрация
 function filterCatalog(category) {
     fetch(`/api/catalog/filter/?category=${category}`, {
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        headers: {'X-Requested-With': 'XMLHttpRequest'}
     })
-    .then(res => res.json())
-    .then(data => updateCatalogContent(data.items))
-    .catch(console.error);
+        .then(res => res.json())
+        .then(data => updateCatalogContent(data.items))
+        .catch(console.error);
 }
 
 function updateCatalogContent(items) {
@@ -111,7 +111,7 @@ function initOverlays() {
 
     // Закрытие по клику вне содержимого
     document.querySelectorAll('.overlay').forEach(overlay => {
-        overlay.addEventListener('click', function(e) {
+        overlay.addEventListener('click', function (e) {
             if (e.target === this) closeOverlay(this.id.replace('-overlay', ''));
         });
     });
@@ -119,7 +119,7 @@ function initOverlays() {
     // Поиск в оверлее
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
-        searchInput.addEventListener('input', function(e) {
+        searchInput.addEventListener('input', function (e) {
             const q = e.target.value.trim();
             if (q.length > 1) performSearch(q);
         });
@@ -129,7 +129,7 @@ function initOverlays() {
 const overlays = ['cart', 'search']
 
 function toggleOverlay(type) {
-    for (const overlay of overlays){
+    for (const overlay of overlays) {
         if (overlay !== type)
             closeOverlay(overlay);
     }
@@ -168,7 +168,7 @@ function closeOverlay(type) {
 async function performSearch(query) {
     try {
         const resp = await fetch(`/api/search/?query=${encodeURIComponent(query)}`);
-        const { items } = await resp.json();
+        const {items} = await resp.json();
         renderSearchResults(items);
     } catch (err) {
         console.error('Ошибка поиска:', err);
@@ -184,7 +184,7 @@ function renderSearchResults(items) {
         const el = document.createElement('div');
         const id = i.id;
         el.className = 'search-item';
-        el.innerHTML = `<a href="/catalog/`+
+        el.innerHTML = `<a href="/catalog/` +
             id.toString() + `" class="catalog-item-link">
                 <img src="${i.image_url}" width="250" height="250"
                      style="object-fit:cover;object-position:center" alt="${i.title}" />
@@ -215,7 +215,7 @@ function addToCart(item) {
     const cart = loadCart();
     const idx = cart.findIndex(i => i.id === item.id);
     if (idx >= 0) cart[idx].qty += 1;
-    else cart.push({ ...item, qty: 1 });
+    else cart.push({...item, qty: 1});
     saveCart(cart);
     updateCartBadge();
 }
@@ -228,20 +228,20 @@ function updateCartBadge() {
 }
 
 function renderCartOverlay() {
-  const container = document.getElementById('cart-items');
-  const cart = loadCart();
-  if (!container) return;
+    const container = document.getElementById('cart-items');
+    const cart = loadCart();
+    if (!container) return;
 
-  if (cart.length === 0) {
-    container.innerHTML = '<p>Корзина пуста.</p>';
-    return;
-  }
+    if (cart.length === 0) {
+        container.innerHTML = '<p>Корзина пуста.</p>';
+        return;
+    }
 
-  // Считаем общую сумму
-  let total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+    // Считаем общую сумму
+    let total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
 
-  // Сборка HTML
-  let html = `
+    // Сборка HTML
+    let html = `
     <ul class="cart-list">
     <div class="cart-footer">
       <div class="cart-footer-label">
@@ -251,9 +251,9 @@ function renderCartOverlay() {
     </div>
   `;
 
-  cart.forEach(i => {
-    const itemSum = i.price * i.qty;
-    html += `
+    cart.forEach(i => {
+        const itemSum = i.price * i.qty;
+        html += `
       <li class="cart-item" data-id="${i.id}">
         <div class="cart-general">
           <img class="cart-thumb" src="${i.image}" alt="${i.title}">
@@ -264,25 +264,83 @@ function renderCartOverlay() {
         </div>
         <div class="cart-sum">${itemSum} р.</div>
       </li>`;
-  });
-
-  html += `</ul>`;
-  container.innerHTML = html;
-
-  // Навешиваем удаление для каждой кнопки
-  container.querySelectorAll('.delete-item-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const li = e.target.closest('.cart-item');
-      const id = parseInt(li.dataset.id, 10);
-      removeFromCart(id);
     });
-  });
+
+    html += `</ul>`;
+    container.innerHTML = html;
+
+    // Навешиваем удаление для каждой кнопки
+    container.querySelectorAll('.delete-item-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            const li = e.target.closest('.cart-item');
+            const id = parseInt(li.dataset.id, 10);
+            removeFromCart(id);
+        });
+    });
 }
 
 // Удаляем один элемент из корзины по id
 function removeFromCart(itemId) {
-  const cart = loadCart().filter(i => i.id !== itemId);
-  saveCart(cart);
-  updateCartBadge();
-  renderCartOverlay();
+    const cart = loadCart().filter(i => i.id !== itemId);
+    saveCart(cart);
+    updateCartBadge();
+    renderCartOverlay();
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('.collection-card-images');
+    const overlay = document.getElementById('collection-overlay');
+    const collectionInfo = document.getElementById('collection-info');
+
+    if (!container || !overlay) return;
+
+    container.addEventListener('wheel', function (event) {
+        if (30 < container.scrollLeft) {
+            setTimeout(() => {
+                overlay.classList.add('active')
+            }, 50)
+        } else {
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 50)
+        }
+        if (event.deltaY !== 0) {
+            event.preventDefault();
+            if (event.deltaY > 0) {
+                if (container.scrollLeft > self.innerWidth / 3){
+                    container.scrollLeft += Number(event.deltaY) * 2;
+                } else {
+                    container.scrollLeft += Number(event.deltaY);
+                }
+            } else {
+                if (container.scrollLeft > self.innerWidth / 3) {
+                    container.scrollLeft += Number(event.deltaY) * 3;
+                } else {
+                    container.scrollLeft += Number(event.deltaY) * 2;
+                }
+            }
+            // Включаем активный режим, если пользователь начал прокручивать
+            if (container.scrollLeft > 0) {
+                setTimeout(() => {
+                    console.log('info width:', collectionInfo.style.width, 'window:', self.innerWidth)
+
+                    if (container.scrollLeft < self.innerWidth / 3) {
+                        container.style.width = `calc(50vw + ${container.scrollLeft}px)`;
+                        collectionInfo.style.width = `calc(50vw - ${container.scrollLeft}px)`;
+                        collectionInfo.style.display = 'flex'
+                    } else {
+                        container.style.width = `100vw`;
+                        collectionInfo.style.display = 'none'
+                    }
+                }, 50)
+            }
+        }
+    }, {passive: false});
+
+    container.addEventListener('scroll', function () {
+        if (container.scrollLeft === 0) {
+            container.classList.remove('scroll-active');
+            overlay.classList.remove('active');
+        }
+    });
+});
