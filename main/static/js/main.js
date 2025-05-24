@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log('DOM loaded on', currentPath);
     initNavigation(currentPath);
     initOverlays();
-
     // Фильтр каталога
     if (document.getElementById('categoryFilter')) {
         initCatalogFilter();
@@ -15,10 +14,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (addBtn) {
         addBtn.addEventListener('click', function (e) {
             e.preventDefault();
+            console.log(this.dataset)
             const item = {
                 id: parseInt(this.dataset.id, 10),
                 title: this.dataset.title,
                 price: parseInt(this.dataset.price, 10),
+                category: this.dataset.category,
                 image: this.dataset.image
             };
             addToCart(item);
@@ -28,7 +29,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Сразу обновляем счётчик
     updateCartBadge();
+    if (currentPath.includes('about')) {
+        const spawnContainer = document.getElementById('spawn-container');
+        if (spawnContainer) {
+            const NUM_PANELS = 250;
+            for (let i = 0; i < NUM_PANELS; i++) {
+                setTimeout(() => {
+                    const panel = document.createElement('div');
+                    panel.className = 'about-item';
+                    panel.textContent = 'О нас [about]';
+                    panel.style.top = `${Math.floor(i / 6) * 25}px`
+                    panel.style.left = `${(i % 6) * 320}px`
+                    panel.id = `about-item-${i}`
+                    panel.onclick = () => hide_about(`about-item-${i}`)
+                    spawnContainer.appendChild(panel);
+                }, i * 100)
+            }
+        }
+    }
+
 });
+
+function hide_about(name) {
+    const about = document.getElementById(name);
+    about.style.display = 'none';
+}
 
 async function handleInput(el) {
     el.style.width = ((el.value.length + 1) * 8) + 'px';
@@ -258,8 +283,12 @@ function renderCartOverlay() {
         <div class="cart-general">
           <img class="cart-thumb" src="${i.image}" alt="${i.title}">
           <div class="cart-info">
-            <button class="delete-item-btn">Удалить</button>
-            <p><strong>${i.title}</strong></p>
+            <button class="delete-item-btn">Удалить</button>`
+        console.log(i)
+        if (i.caregory === "Кольца") {
+            html += `<input placeholder="Размер" />`
+        }
+        html += `<p><strong>${i.title}</strong></p>
           </div>
         </div>
         <div class="cart-sum">${itemSum} р.</div>
@@ -307,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.deltaY !== 0) {
             event.preventDefault();
             if (event.deltaY > 0) {
-                if (container.scrollLeft > self.innerWidth / 3){
+                if (container.scrollLeft > self.innerWidth / 3) {
                     container.scrollLeft += Number(event.deltaY) * 2;
                 } else {
                     container.scrollLeft += Number(event.deltaY);
@@ -344,3 +373,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+
