@@ -1,16 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
-from .models import HomePageImage, CatalogItem, Collection, CollectionImage
+from .models import HomePageImage, CatalogItem, Collection, CollectionImage, ItemImage
 
 
 def catalog_item_detail(request, item_id):
     """Страница с подробной информацией о товаре"""
     item = get_object_or_404(CatalogItem, id=item_id)
+    images = item.itemImages.all()  # Только изображения для текущего товара
     if item.description is None:
         item.description = ""
+
+    images = [item, *images]
     return render(request, 'catalog_item_detail.html', {
         'item': item,
+        'images': images,
         'background_image': get_background_image(),
     })
 

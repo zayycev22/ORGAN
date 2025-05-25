@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const addBtn = document.getElementById('add-to-cart-btn');
     if (addBtn) {
         addBtn.addEventListener('click', function (e) {
+            addBtn.classList.add('active')
+            setTimeout(() => addBtn.classList.remove('active'), 100)
             e.preventDefault();
-            console.log(this.dataset)
             const item = {
                 id: parseInt(this.dataset.id, 10),
                 title: this.dataset.title,
@@ -252,6 +253,14 @@ function updateCartBadge() {
     badge.textContent = total;
 }
 
+const category_map = {
+    'bracelets': 'Браслет',
+    'earrings': 'Серьги',
+    'pendants': 'Кулон',
+    'necklaces': 'Ожерелье',
+    'rings': 'Кольцо',
+};
+
 function renderCartOverlay() {
     const container = document.getElementById('cart-items');
     const cart = loadCart();
@@ -283,13 +292,22 @@ function renderCartOverlay() {
         <div class="cart-general">
           <img class="cart-thumb" src="${i.image}" alt="${i.title}">
           <div class="cart-info">
-            <button class="delete-item-btn">Удалить</button>`
-        console.log(i)
-        if (i.caregory === "Кольца") {
-            html += `<input placeholder="Размер" />`
+            <button class="delete-item-btn">Удалить</button>
+            <div class="cart-text">`
+
+        console.log(i?.category)
+        if (i.category === "rings") {
+            html += `<div class="underline">ПО ЕВРОПЕЙСКОЙ СИСТЕМЕ РАЗМЕРОВ</div>
+              <div class="inline-size">ВВЕДИТЕ РАЗМЕР: <input class="size-input" placeholder="" /></div>`
         }
-        html += `<p><strong>${i.title}</strong></p>
-          </div>
+        html += `<p><strong>`
+        if (i.category) {
+            const categoryName = category_map[i.category]
+            html += `${categoryName}: `;
+        }
+        html += `${i.title}</strong></p>
+                </div>
+            </div>
         </div>
         <div class="cart-sum">${itemSum} р.</div>
       </li>`;
@@ -335,19 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (event.deltaY !== 0) {
             event.preventDefault();
-            if (event.deltaY > 0) {
-                if (container.scrollLeft > self.innerWidth / 3) {
-                    container.scrollLeft += Number(event.deltaY) * 2;
-                } else {
-                    container.scrollLeft += Number(event.deltaY);
-                }
-            } else {
-                if (container.scrollLeft > self.innerWidth / 3) {
-                    container.scrollLeft += Number(event.deltaY) * 3;
-                } else {
-                    container.scrollLeft += Number(event.deltaY) * 2;
-                }
-            }
+            container.scrollLeft += Number(event.deltaY) * 4;
             // Включаем активный режим, если пользователь начал прокручивать
             if (container.scrollLeft > 0) {
                 setTimeout(() => {

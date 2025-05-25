@@ -21,6 +21,13 @@ class Collection(models.Model):
     def __str__(self):
         return f"{self.name} ({self.year})"
 
+class CollectionImage(models.Model):
+    collection = models.ForeignKey(Collection, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField("Фотография", upload_to='collections/')
+
+    def __str__(self):
+        return f"Изображение для {self.collection.name}"
+
 
 class CatalogItem(models.Model):
     CATEGORY_CHOICES = [
@@ -61,9 +68,9 @@ class CatalogItem(models.Model):
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
 
-class CollectionImage(models.Model):
-    collection = models.ForeignKey(Collection, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField("Фотография", upload_to='collections/')
+class ItemImage(models.Model):
+    item = models.ForeignKey(CatalogItem, related_name='itemImages', on_delete=models.CASCADE)
+    image = models.ImageField("Фотография", upload_to='itemImages/')
 
     def __str__(self):
-        return f"Изображение для {self.collection.name}"
+        return f"Изображение для {self.item.title}"
