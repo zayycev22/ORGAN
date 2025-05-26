@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
@@ -12,10 +14,13 @@ def catalog_item_detail(request, item_id):
         item.description = ""
 
     images = [item, *images]
+    available_sizes_json = json.dumps(item.available_sizes or [])
+
     return render(request, 'catalog_item_detail.html', {
         'item': item,
         'images': images,
         'background_image': get_background_image(),
+        'available_sizes_json': available_sizes_json,
     })
 
 def collection_detail(request, collection_id):

@@ -15,16 +15,23 @@ document.addEventListener("DOMContentLoaded", function () {
         addBtn.addEventListener('click', function (e) {
             addBtn.classList.add('active')
             setTimeout(() => addBtn.classList.remove('active'), 100)
+
+            let sizes = [];
+            try {
+                sizes = JSON.parse(this.dataset.sizes || '[]');
+            } catch (err) {
+                console.warn('Ошибка парсинга sizes:', err);
+            }
             e.preventDefault();
             const item = {
                 id: parseInt(this.dataset.id, 10),
                 title: this.dataset.title,
                 price: parseInt(this.dataset.price, 10),
                 category: this.dataset.category,
-                image: this.dataset.image
+                image: this.dataset.image,
+                sizes: sizes.length > 0 ? sizes : null,
             };
             addToCart(item);
-            console.log(`"${item.title}" добавлен(а) в корзину`);
         });
     }
 
@@ -295,10 +302,19 @@ function renderCartOverlay() {
             <button class="delete-item-btn">Удалить</button>
             <div class="cart-text">`
 
-        console.log(i?.category)
-        if (i.category === "rings") {
+        console.log(i?.sizes)
+        if (i.category === "rings" && i.sizes) {
             html += `<div class="underline">ПО ЕВРОПЕЙСКОЙ СИСТЕМЕ РАЗМЕРОВ</div>
-              <div class="inline-size">ВВЕДИТЕ РАЗМЕР: <input class="size-input" placeholder="" /></div>`
+              <div class="inline-size">
+              ВВЕДИТЕ РАЗМЕР: 
+              <select class="size-input" >
+                <option value="" disabled selected hidden></option>`
+
+            for (const size of i.sizes) {
+                html += `<option value=${size} > ${size} </option>`
+            }
+
+            html += `</select></div>`
         }
         html += `<p><strong>`
         if (i.category) {
