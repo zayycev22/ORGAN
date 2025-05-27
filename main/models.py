@@ -21,6 +21,13 @@ class Collection(models.Model):
     def __str__(self):
         return f"{self.name} ({self.year})"
 
+class CollectionImage(models.Model):
+    collection = models.ForeignKey(Collection, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField("Фотография", upload_to='collections/')
+
+    def __str__(self):
+        return f"Изображение для {self.collection.name}"
+
 
 class CatalogItem(models.Model):
     CATEGORY_CHOICES = [
@@ -43,10 +50,16 @@ class CatalogItem(models.Model):
         verbose_name="Коллекция",
         related_name='items'
     )
-    price = models.IntegerField(verbose_name="Цена (в рублях)")  # Добавлено
-    material = models.CharField(max_length=100, verbose_name="Материал")  # Добавлено
-    size = models.CharField(max_length=50, verbose_name="Размер")  # Добавлено
-    available = models.BooleanField(default=True, verbose_name="В наличии")  # Добавлено
+    price = models.IntegerField(verbose_name="Цена (в рублях)")
+    material = models.CharField(max_length=100, verbose_name="Материал")
+    size = models.CharField(max_length=50, verbose_name="Размер")
+    available_sizes = models.JSONField(
+        blank=True,
+        null=True,
+        verbose_name="Размеры кольца(для колец)",
+        help_text="Список доступных размеров в формате JSON (например: [\"S\", \"M\", \"L\"])"
+    )
+    available = models.BooleanField(default=True, verbose_name="В наличии")
     description = models.TextField(
         verbose_name="Описание",
         blank=True,
@@ -61,9 +74,9 @@ class CatalogItem(models.Model):
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
 
-class CollectionImage(models.Model):
-    collection = models.ForeignKey(Collection, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField("Фотография", upload_to='collections/')
+class ItemImage(models.Model):
+    item = models.ForeignKey(CatalogItem, related_name='itemImages', on_delete=models.CASCADE)
+    image = models.ImageField("Фотография", upload_to='itemImages/')
 
     def __str__(self):
-        return f"Изображение для {self.collection.name}"
+        return f"Изображение для {self.item.title}"

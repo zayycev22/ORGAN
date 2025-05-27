@@ -5,7 +5,7 @@
 {% block content %}
     <div class="collection-detail">
         {# Левая колонка: всё остальное #}
-        <div class="collection-info">
+        <div class="collection-info" id="collection-info">
             <div class="title-wrap">
                 <div class="collection-title">[{{ collection.status }}]</div>
             </div>
@@ -19,6 +19,8 @@
                 <img src="{{ img.image.url }}">
             {% endfor %}
         </div>
+        <div id="collection-overlay"></div>
+
 
     </div>
 {% endblock %}
