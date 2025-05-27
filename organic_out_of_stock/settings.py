@@ -20,14 +20,22 @@ dotenv.load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 ENV_PATH_TO_DB = os.getenv("PATH_TO_DB")
+
+ENV_PATH_TO_MEDIA = os.getenv("PATH_TO_MEDIA")
+
 if ENV_PATH_TO_DB:
     PATH_TO_DB = Path(ENV_PATH_TO_DB) / "db.sqlite3"
 else:
     PATH_TO_DB = BASE_DIR / "db.sqlite3"
+
+if ENV_PATH_TO_MEDIA:
+    PATH_TO_MEDIA = Path(ENV_PATH_TO_MEDIA) / "media"
+else:
+    PATH_TO_MEDIA = BASE_DIR / "media"
 PROD = os.getenv("PROD")
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = PATH_TO_MEDIA
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
