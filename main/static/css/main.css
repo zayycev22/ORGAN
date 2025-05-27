@@ -37,7 +37,7 @@ html, body {
     width: 100vw;
     position: relative;
     background: rgb(232, 232, 232);
-    z-index: 221!important;
+    z-index: 100!important;
 }
 
 .nav-column {
