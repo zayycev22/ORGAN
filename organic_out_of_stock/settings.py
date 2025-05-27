@@ -24,6 +24,7 @@ if ENV_PATH_TO_DB:
     PATH_TO_DB = Path(ENV_PATH_TO_DB) / "db.sqlite3"
 else:
     PATH_TO_DB = BASE_DIR / "db.sqlite3"
+PROD = os.getenv("PROD")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -35,9 +36,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = 'django-insecure--v$%*e=kyf%&mk7jeg)3y5^f22a34v*(1$j9#wmq7!johon$@#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ALLOWED_HOSTS = ['*']
+if PROD:
+    DEBUG = False
 
-ALLOWED_HOSTS = []
+else:
+    DEBUG = True
 
 # Application definition
 
