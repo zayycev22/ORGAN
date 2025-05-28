@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Включаем активный режим, если пользователь начал прокручивать
             if (container.scrollLeft > 0) {
                 setTimeout(() => {
-                    console.log('info width:', collectionInfo.style.width, 'window:', self.innerWidth)
+                    console.log('scrolled left: ', container.scrollMarginLeft, 'scrolled right: ', container.scrollMarginRight)
                     if (container.scrollMarginLeft < container.scrollMarginRight && container.scrollMarginLeft < self.innerWidth / 3) {
                         container.style.width = `calc(50vw + ${container.scrollLeft}px)`;
                         collectionInfo.style.width = `calc(50vw - ${container.scrollLeft}px)`;
