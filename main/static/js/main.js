@@ -374,7 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (container.scrollLeft > 0) {
                 setTimeout(() => {
                     console.log('info width:', collectionInfo.style.width, 'window:', self.innerWidth)
-
                     if (container.scrollMarginLeft < container.scrollMarginRight && container.scrollMarginLeft < self.innerWidth / 3) {
                         container.style.width = `calc(50vw + ${container.scrollLeft}px)`;
                         collectionInfo.style.width = `calc(50vw - ${container.scrollLeft}px)`;
